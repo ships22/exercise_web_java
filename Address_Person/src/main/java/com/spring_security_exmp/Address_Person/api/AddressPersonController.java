@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import com.spring_security_exmp.Address_Person.model.User;
 import com.spring_security_exmp.Address_Person.repository.AddressRepository;
 import com.spring_security_exmp.Address_Person.repository.PersonRepository;
 import com.spring_security_exmp.Address_Person.repository.UserRepository;
-
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -54,22 +55,23 @@ public class AddressPersonController {
 	}
 	
 	@PostMapping(value = "/add_person", produces = "application/json")
-	public String addPerson(@RequestBody Person person) {
+	public ResponseEntity<String> addPerson(@RequestBody Person person) {
 		String encodedPassword = securityConfig.passwordEncoder().encode(person.getFirst_name());
 		User userToAdd = new User(person.getEmail(),encodedPassword, "ROLE_USER");
 		Optional<User> existing = userRepository.findByUserName(person.getEmail());
 			if(existing.isPresent()) {
-				return "an user already registered with e-mail.";
+				//return "an user already registered with e-mail.";
+				return new ResponseEntity<>("an user already registered with e-mail.!", HttpStatus.OK);
 			} else {				
 				User addedUser = userRepository.save(userToAdd);
 				if(addedUser != null) {
 					person.setUser(addedUser);
 					personRepository.save(person);
-					return "User added";
+					return new ResponseEntity<>( "User added", HttpStatus.OK);
 			}
 
 		}
-				return "Server is down";
+				return new ResponseEntity<>("Server is down", HttpStatus.OK);
 	}
 
 }

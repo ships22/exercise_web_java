@@ -30,7 +30,7 @@
           </div>
           <button>Submit</button>
     </form>
-    <form class="form_address" #address="ngForm" (ngSubmit)="submitAddress(address)">
+    <form class="form_address" #address="ngForm" (ngSubmit)="submitAddress(address)" *ngIf="httpService.isLoggedIn && httpService.user_role == 'ROLE_ADMIN'">
         <div class="input_group">
             <label for="no">No : </label>
             <input ngModel #no="ngModel" name="no" type="number" placeholder="Door no" id="no" required minlength="1"

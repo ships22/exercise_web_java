@@ -1,0 +1,8 @@
+<nav>
+    <li>
+      <a *ngIf="!httpService.isLoggedIn" routerLink="/login" routerLinkActive="active">Admin Login</a>
+    </li> 
+    <li *ngIf="httpService.isLoggedIn">
+      <a (click)="logout()">Logout</a>
+    </li>
+</nav>

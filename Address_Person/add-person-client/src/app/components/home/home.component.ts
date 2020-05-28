@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from 'src/app/http-client.service';
 import { Person } from 'src/app/model/person';
 import { Address } from 'src/app/model/address';
+import { User } from 'src/app/model/user';
+
+import * as jwt_decode from "jwt-decode";
 
 @Component({
   selector: 'app-home',
@@ -13,27 +16,29 @@ export class HomeComponent implements OnInit {
   personList : Person[];
   personToAdd: Person;    
   addressList: Address[];
-  constructor(private httpService: HttpClientService) { }
+  isLoggedIn = false;
+  isAdmin = false;
+  constructor(public httpService: HttpClientService) { }
 
   ngOnInit(): void {
     this.getAllperson();
     this.getAllAddress();
+    
   }
 
   getAllperson() {
     this.httpService.getAllPerson()
-    .subscribe(response => {this.personList = response, console.log('respone' , response);
-    })
+    .subscribe(response => this.personList = response)
   }
   submit(e) {
-    let addressToadd = this.addressList.find(data => data.id == e.value.address);
-    let personToAdd = e.value;
-    personToAdd.address = this.addressList.find(data => data.id == e.value.address);
-    console.log('test send person to db :', personToAdd);
+    //let addressToadd = this.addressList.find(data => data.id == e.value.address);
+    personToAdd: Person;
+    this.personToAdd = e.value;
+    this.personToAdd.address = this.addressList.find(data => data.id == e.value.address);
     
-    this.httpService.addPerson(personToAdd)
-    .subscribe(response => this.getAllperson())
     
+    this.httpService.addPerson(this.personToAdd)
+    .subscribe()
   }
   getAllAddress() {
     this.httpService.getAllAddress()
@@ -43,5 +48,5 @@ export class HomeComponent implements OnInit {
     this.httpService.addAddress(address.value)
     .subscribe()
   }
-
+  
 }
