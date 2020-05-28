@@ -48,13 +48,13 @@ public class AddressPersonController {
 	}
 	
 	@PostMapping(value = "/add_address", produces = "application/json")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public Address addAddress(@RequestBody Address address) {
 			return addressRepository.save(address);
 	}
 	
 	@PostMapping(value = "/add_person", produces = "application/json")
-	public String addClient(@RequestBody Person person) {
+	public String addPerson(@RequestBody Person person) {
 		String encodedPassword = securityConfig.passwordEncoder().encode(person.getFirst_name());
 		User userToAdd = new User(person.getEmail(),encodedPassword, "ROLE_USER");
 		Optional<User> existing = userRepository.findByUserName(person.getEmail());
@@ -64,6 +64,7 @@ public class AddressPersonController {
 				User addedUser = userRepository.save(userToAdd);
 				if(addedUser != null) {
 					person.setUser(addedUser);
+					personRepository.save(person);
 					return "User added";
 			}
 

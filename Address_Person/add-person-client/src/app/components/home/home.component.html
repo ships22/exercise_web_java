@@ -1,0 +1,77 @@
+<div class="main">
+    <form class="form_add" #f="ngForm" (ngSubmit)="submit(f)">
+        <div class="input_group">
+            <label for="first_name">First name : </label>
+            <input ngModel #first_name="ngModel" name="first_name" type="text" placeholder="First name" id="first_name" required minlength="3"
+            />
+          </div>
+          <div class="input_group">
+            <label for="last_name">Last name : </label>
+            <input ngModel #last_name="ngModel" name="last_name" type="text" placeholder="last_name" id="last_name" required minlength="1" 
+            />
+          </div>
+          <div class="input_group">
+            <label for="email">Email : </label>
+            <input ngModel #email="ngModel" name="email" type="text" placeholder="email" id="email" required minlength="1" 
+            />
+          </div>
+          <div class="input_group">
+            <label for="cat">Address : </label>
+            <select ngModel name="address" id="address" required>
+              <option value=""></option>
+              <option *ngFor="let address of addressList" [value]="address.id">
+                  {{ address.no }}, 
+                  {{ address.street }}, 
+                  {{ address.town }},
+                  {{ address.district }},
+                  {{ address.country }}
+              </option>
+            </select>
+          </div>
+          <button>Submit</button>
+    </form>
+    <form class="form_address" #address="ngForm" (ngSubmit)="submitAddress(address)">
+        <div class="input_group">
+            <label for="no">No : </label>
+            <input ngModel #no="ngModel" name="no" type="number" placeholder="Door no" id="no" required minlength="1"
+            />
+          </div>
+          <div class="input_group">
+            <label for="street">Street : </label>
+            <input ngModel #street="ngModel" name="street" type="text" placeholder="street" id="street" required minlength="3" 
+            />
+          </div>
+          <div class="input_group">
+            <label for="town">Town : </label>
+            <input ngModel #town="ngModel" name="town" type="text" placeholder="town" id="town" required minlength="3" 
+            />
+          </div>
+          <div class="input_group">
+            <label for="district">District : </label>
+            <input ngModel #district="ngModel" name="district" type="text" placeholder="district" id="district" required minlength="3" 
+            />
+          </div>
+          <div class="input_group">
+            <label for="country">Country : </label>
+            <input ngModel #country="ngModel" name="country" type="text" placeholder="country" id="country" required minlength="3" 
+            />
+          </div>
+          <button>Submit</button>
+    </form>
+    <section *ngIf="personList">
+        <div *ngFor="let person of personList; let i = index">
+            <h6>{{ person.first_name }} {{ person.last_name }}</h6>
+            <p>First name : {{ person.first_name }}</p>
+            <p>Last name : {{ person.last_name }}</p>
+            <p>Email : {{ person.email }}</p>
+            <p>Phone : {{ person.phone }}</p>
+            <p *ngIf="person.address">Address : {{ person.address?.no }}, 
+                         {{ person.address?.street }}, 
+                         {{ person.address?.town }},
+                         {{ person.address?.district }},
+                         {{ person.address?.country }}
+            </p>
+            <p *ngIf="!person.address">No address is associated</p>
+        </div>
+    </section>
+</div>

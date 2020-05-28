@@ -7,5 +7,7 @@ import com.spring_security_exmp.Address_Person.model.Address;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer>{
+	
+	Address findById(int id);
 
 }
